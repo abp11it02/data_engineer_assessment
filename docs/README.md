@@ -105,6 +105,7 @@ Design -
 Each table contains property ID as a foreign to Property table as shown below
 
 Property
+```
     id varchar(50) primary key,
     Property_Title varchar(255),
     Address varchar(255),
@@ -138,15 +139,19 @@ Property
     Longitude float,
     Subdivision varchar(100),
     School_Average float
+```
 
 HOA - 
+```
     id varchar(50) primary key,
     property_id varchar(50),
     hoa integer,
     hoa_flag varchar(3),
     FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+```
 
 Leads - 
+```
     id varchar(50) primary key,
     property_id varchar(50),
     Most_Recent_Status varchar(50),
@@ -158,8 +163,10 @@ Leads -
     Seller_Retained_Broker varchar(50),
     Final_Reviewer varchar(50),
     FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+```
 
 Rehab - 
+```
     id varchar(50) primary key,
     property_id varchar(50),
     Underwriting_Rehab integer,
@@ -176,14 +183,18 @@ Rehab -
     Landscaping_Flag varchar(3),
     Trashout_Flag varchar(3),
     FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+```
 
 Taxes - 
+```
     id varchar(50) primary key,
     property_id varchar(50),
     taxes integer,
     FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+```
 
 Valuation (Default values of valuation columns is 0)- 
+```
     id varchar(50) primary key,
     property_id varchar(50),
     Previous_Rent integer,
@@ -196,6 +207,7 @@ Valuation (Default values of valuation columns is 0)-
     High_FMR integer,
     Redfin_Value integer,
     FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+```
 
 Scripts folder contain following scripts - 
 
