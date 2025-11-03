@@ -1,18 +1,29 @@
-import mysql.connector
+from mysql.connector import Error
 import os
 
-# conn = mysql.connector.connect(host = "127.0.0.1", port = 3306, user = "db_user" , password = "6equj5_db_user")
-# cur  = conn.cursor()
 
-# cur.execute("show databases;")
-script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)
-filepath = os.path.join(parent_dir, "sql", "create_table.sql")
-with open(filepath, 'r') as file:
-    sql_script = file.read()
-statements = [stmt.strip() for stmt in sql_script.split(';')]
-print(statements)
-# print(cur.fetchall())
-
-# cur.close()
-# conn.close()
+def create_tables(cur):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(script_dir)
+    filepath = os.path.join(parent_dir, "sql", "create_table.sql")
+    try:
+        with open(filepath, 'r') as file:
+            # Read SQL file content
+            sql_script = file.read()
+            
+            # Split into individual statements and filter out empty ones
+            statements = [stmt.strip() for stmt in sql_script.split(';') if stmt.strip()]
+            
+            # Execute each statement
+            for statement in statements:
+                if statement and not statement.isspace():
+                    print(f"Executing: {statement[:100]}...") # Print first 100 chars of statement
+                    cur.execute(statement)
+                    print("Statement executed successfully")
+                else:
+                    print("Skipping empty statement")
+                
+    except FileNotFoundError:
+        print(f"SQL file not found at: {filepath}")
+    except Error as err:
+        print(f"MySQL Error: {err}")
