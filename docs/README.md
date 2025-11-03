@@ -99,3 +99,129 @@ For MySQL Docker image reference:
 - Outline your approach and design
 - Provide instructions and code snippets for running the ETL
 - List any requirements
+
+
+Design - 
+Each table contains property ID as a foreign to Property table as shown below
+
+Property
+    id varchar(50) primary key,
+    Property_Title varchar(255),
+    Address varchar(255),
+    Market varchar(100),
+    Flood varchar(100),
+    Street_Address varchar(255),
+    City varchar(100),
+    State varchar(50),
+    Zip varchar(20),
+    Property_Type varchar(100),
+    Highway varchar(100),
+    Train varchar(100),
+    Tax_Rate float,
+    SQFT_Basement integer,
+    HTW varchar(3),
+    Pool varchar(3),
+    Commercial varchar(3),
+    Water varchar(100),
+    Sewage varchar(100),
+    Year_Built integer,
+    SQFT_MU integer,
+    SQFT_Total varchar(50),
+    Parking varchar(100),
+    Bed integer,
+    Bath integer,
+    BasementYesNo varchar(3),
+    Layout varchar(100),
+    Rent_Restricted varchar(100),
+    Neighborhood_Rating integer,
+    Latitude float,
+    Longitude float,
+    Subdivision varchar(100),
+    School_Average float
+
+HOA - 
+    id varchar(50) primary key,
+    property_id varchar(50),
+    hoa integer,
+    hoa_flag varchar(3),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+
+Leads - 
+    id varchar(50) primary key,
+    property_id varchar(50),
+    Most_Recent_Status varchar(50),
+    Source varchar(50),
+    Occupancy varchar(50),
+    Net_Yield float,
+    IRR float,
+    Selling_Reason varchar(50),
+    Seller_Retained_Broker varchar(50),
+    Final_Reviewer varchar(50),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+
+Rehab - 
+    id varchar(50) primary key,
+    property_id varchar(50),
+    Underwriting_Rehab integer,
+    Rehab_Calculation integer,
+    Paint varchar(3),
+    Flooring_Flag varchar(3),
+    Foundation_Flag varchar(3),
+    Roof_Flag varchar(3),
+    HVAC_Flag varchar(3),
+    Kitchen_Flag varchar(3),
+    Bathroom_Flag varchar(3),
+    Appliances_Flag varchar(3),
+    Windows_Flag varchar(3),
+    Landscaping_Flag varchar(3),
+    Trashout_Flag varchar(3),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+
+Taxes - 
+    id varchar(50) primary key,
+    property_id varchar(50),
+    taxes integer,
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+
+Valuation (Default values of valuation columns is 0)- 
+    id varchar(50) primary key,
+    property_id varchar(50),
+    Previous_Rent integer,
+    List_Price integer,
+    Zestimate integer,
+    ARV integer,
+    Expected_Rent integer,
+    Rent_Zestimate integer,
+    Low_FMR integer,
+    High_FMR integer,
+    Redfin_Value integer,
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+
+Scripts folder contain following scripts - 
+
+create_connection.py - Creates/Manages and Closes MySQL connection and calls create table and load table functions
+create_tables.py - executes create table scripts for all the tables
+load_table.py - loads data into the tables
+
+SQL folder contains following scripts - 
+create_table.sql - Contains all the create table statements along with foreign key and primary key
+
+requirements.txt - Contains all the requirements needed for the Python scripts
+
+Steps to run this project - 
+Make sure you have Python 3 and pip installed in the system. MySQL will be run as docker container.
+
+Run the following docker commands to start MySQL docker - 
+
+docker build -t mysql-image -f .\Dockerfile.initial_db . 
+docker run -d --name mysql-db -p 3306:3306 mysql-image
+
+This will start the MySQL docker container on port 3306 and make it accessible to the python scripts
+
+Install python requirements -
+
+pip install -r requirements.txt
+
+Run the python script create_connection.py and it will create the connection, create tables and load data into them - 
+
+python3 scripts/create_connection.py
