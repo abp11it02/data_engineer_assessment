@@ -129,7 +129,7 @@ def load_tables(cur):
         """
 
         try:
-            for valuation in property.get('Rehab'):
+            for valuation in property.get('Valuation'):
                 cur.execute(valuation_query, (
                     id,
                     valuation.get('Previous_Rent'),
@@ -142,5 +142,19 @@ def load_tables(cur):
                     valuation.get('High_FMR'),
                     valuation.get('Redfin_Value')
                 ))
+        except Error as e:
+            print(f"Error connecting to MySQL: {e}")
+
+        # Load table taxes
+        taxes_query = """
+        insert into taxes (property_id, taxes) 
+        values(%s, %s)
+        """
+
+        try:
+            cur.execute(taxes_query, (
+                id,
+                property.get('Taxes')
+            ))
         except Error as e:
             print(f"Error connecting to MySQL: {e}")

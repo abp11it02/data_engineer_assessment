@@ -1,7 +1,8 @@
 create table if not exists HOA (
     property_id varchar(50),
     hoa integer,
-    hoa_flag varchar(3)
+    hoa_flag varchar(3),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
 );
 
 create table if not exists leads (
@@ -13,11 +14,12 @@ create table if not exists leads (
     IRR float,
     Selling_Reason varchar(50),
     Seller_Retained_Broker varchar(50),
-    Final_Reviewer varchar(50)
+    Final_Reviewer varchar(50),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
 );
 
 create table if not exists property (
-    id varchar(50),
+    id varchar(50) primary key,
     Property_Title varchar(255),
     Address varchar(255),
     Market varchar(100),
@@ -66,13 +68,15 @@ create table if not exists rehab (
     Appliances_Flag varchar(3),
     Windows_Flag varchar(3),
     Landscaping_Flag varchar(3),
-    Trashout_Flag varchar(3)
+    Trashout_Flag varchar(3),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
 );
 
 
 create table if not exists taxes (
     property_id varchar(50),
-    taxes integer
+    taxes integer,
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
 );
 
 create table if not exists valuation (
@@ -85,5 +89,6 @@ create table if not exists valuation (
     Rent_Zestimate integer,
     Low_FMR integer,
     High_FMR integer,
-    Redfin_Value integer
+    Redfin_Value integer,
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
 );
