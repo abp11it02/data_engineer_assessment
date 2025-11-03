@@ -218,10 +218,16 @@ docker run -d --name mysql-db -p 3306:3306 mysql-image
 
 This will start the MySQL docker container on port 3306 and make it accessible to the python scripts
 
-Install python requirements -
+Install python dependencies -
 
 pip install -r requirements.txt
 
 Run the python script create_connection.py and it will create the connection, create tables and load data into them - 
 
 python3 scripts/create_connection.py
+
+Check if data is properly loaded into the tables-
+
+docker exec -it mysql-db mysql -uroot -p
+
+provide password when prompted - 6equj5_db_user
