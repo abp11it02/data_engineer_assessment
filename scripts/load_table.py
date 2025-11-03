@@ -11,7 +11,7 @@ def load_tables(cur):
     with open(filepath, 'r') as file:
         properties = json.load(file)
 
-    print("Inserting data to tables...")
+    print("Inserting data into tables...")
     for property in properties:
         id = str(uuid.uuid4())
         # Insert into property table
@@ -159,4 +159,4 @@ def load_tables(cur):
             ))
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
-    print("Inserting completed!!!")
+    print(f"Insertion completed!!! Added {len(properties)} properties")
