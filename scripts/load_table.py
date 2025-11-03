@@ -103,7 +103,7 @@ def load_tables(cur):
 
         try:
             for rehab in property.get('Rehab'):
-                cur.execute(hoa_query, (
+                cur.execute(rehab_query, (
                     id,
                     rehab.get('Underwriting_Rehab'),
                     rehab.get('Rehab_Calculation'),
@@ -117,7 +117,30 @@ def load_tables(cur):
                     rehab.get('Appliances_Flag'),
                     rehab.get('Windows_Flag'),
                     rehab.get('Landscaping_Flag'),
-                    rehab.get('Trashout_Flag'),
+                    rehab.get('Trashout_Flag')
+                ))
+        except Error as e:
+            print(f"Error connecting to MySQL: {e}")
+
+        # Load table Valuation
+        valuation_query = """
+        insert into valuation (property_id, Previous_Rent, List_Price, Zestimate, ARV, Expected_Rent, Rent_Zestimate, Low_FMR, High_FMR, Redfin_Value) 
+        values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+
+        try:
+            for valuation in property.get('Rehab'):
+                cur.execute(valuation_query, (
+                    id,
+                    valuation.get('Previous_Rent'),
+                    valuation.get('List_Price'),
+                    valuation.get('Zestimate'),
+                    valuation.get('ARV'),
+                    valuation.get('Expected_Rent'),
+                    valuation.get('Rent_Zestimate'),
+                    valuation.get('Low_FMR'),
+                    valuation.get('High_FMR'),
+                    valuation.get('Redfin_Value')
                 ))
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
