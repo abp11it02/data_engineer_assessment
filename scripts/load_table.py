@@ -8,6 +8,16 @@ def load_tables(cur):
     parent_dir = os.path.dirname(script_dir)
     filepath = os.path.join(parent_dir, "data", "fake_property_data_new.json")
 
+    # Initialize counters
+    counts = {
+        'property': 0,
+        'leads': 0,
+        'HOA': 0,
+        'rehab': 0,
+        'taxes': 0,
+        'valuation': 0
+    }
+
     with open(filepath, 'r') as file:
         properties = json.load(file)
 
@@ -55,6 +65,7 @@ def load_tables(cur):
                 property.get('Subdivision'),
                 property.get('School_Average')
             ))
+            counts['property'] += 1
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
         
@@ -71,6 +82,7 @@ def load_tables(cur):
                     hoa.get('HOA'),
                     hoa.get('HOA_Flag')
                 ))
+                counts['HOA'] += 1
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
         
@@ -93,6 +105,7 @@ def load_tables(cur):
                 property.get('Seller_Retained_Broker'),
                 property.get('Final_Reviewer')
             ))
+            counts['leads'] += 1
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
         
@@ -120,6 +133,7 @@ def load_tables(cur):
                     rehab.get('Landscaping_Flag'),
                     rehab.get('Trashout_Flag')
                 ))
+                counts['rehab'] += 1
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
 
@@ -143,6 +157,7 @@ def load_tables(cur):
                     valuation.get('High_FMR'),
                     valuation.get('Redfin_Value')
                 ))
+                counts['valuation'] += 1
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
 
@@ -157,6 +172,17 @@ def load_tables(cur):
                 id,
                 property.get('Taxes')
             ))
+            counts['taxes'] += 1
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
-    print(f"Insertion completed!!! Added {len(properties)} properties")
+    # Print Summary
+    print(f"Insertion completed!!!")
+    print("Insertion Summary: ")
+    for table, count in counts.items():
+        print(f"{count} records inserted in {table}")
+    
+    # Verify from database
+    for table in counts.keys():
+        cur.execute(f"select count(*) from {table}")
+        rec_count = cur.fetchone()[0]
+        print(f"{table} contains {rec_count} records")
