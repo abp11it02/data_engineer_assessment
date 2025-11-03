@@ -35,6 +35,7 @@ create table if not exists property (
 );
 
 create table if not exists HOA (
+    id varchar(50) primary key,
     property_id varchar(50),
     hoa integer,
     hoa_flag varchar(3),
@@ -42,6 +43,7 @@ create table if not exists HOA (
 );
 
 create table if not exists leads (
+    id varchar(50) primary key,
     property_id varchar(50),
     Most_Recent_Status varchar(50),
     Source varchar(50),
@@ -55,6 +57,7 @@ create table if not exists leads (
 );
 
 create table if not exists rehab (
+    id varchar(50) primary key,
     property_id varchar(50),
     Underwriting_Rehab integer,
     Rehab_Calculation integer,
@@ -74,12 +77,14 @@ create table if not exists rehab (
 
 
 create table if not exists taxes (
+    id varchar(50) primary key,
     property_id varchar(50),
     taxes integer,
     FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
 );
 
 create table if not exists valuation (
+    id varchar(50) primary key,
     property_id varchar(50),
     Previous_Rent integer,
     List_Price integer,

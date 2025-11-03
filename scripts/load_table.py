@@ -72,13 +72,14 @@ def load_tables(cur):
 
         # Load table HOA
         hoa_query = """
-        insert into HOA (property_id, hoa, hoa_flag) values(%s, %s, %s)
+        insert into HOA (id, property_id, hoa, hoa_flag) values(%s, %s, %s, %s)
         """
 
         try:
             for hoa in property.get('HOA'):
                 cur.execute(hoa_query, (
-                    id,
+                    str(uuid.uuid4()),
+                    id,  # Property ID
                     hoa.get('HOA'),
                     hoa.get('HOA_Flag')
                 ))
@@ -89,13 +90,14 @@ def load_tables(cur):
 
         # Load table leads
         leads_query = """
-        insert into leads (property_id, Most_Recent_Status, Source, Occupancy, Net_Yield, IRR, Selling_Reason, Seller_Retained_Broker, Final_Reviewer) 
-        values(%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        insert into leads (id, property_id, Most_Recent_Status, Source, Occupancy, Net_Yield, IRR, Selling_Reason, Seller_Retained_Broker, Final_Reviewer) 
+        values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         try:
             cur.execute(leads_query, (
-                id,
+                str(uuid.uuid4()),
+                id,  # Property ID
                 property.get('Most_Recent_Status'),
                 property.get('Source'),
                 property.get('Occupancy'),
@@ -111,14 +113,15 @@ def load_tables(cur):
         
         # Load table Rehab
         rehab_query = """
-        insert into rehab (property_id, Underwriting_Rehab, Rehab_Calculation, Paint, Flooring_Flag, Foundation_Flag, Roof_Flag, HVAC_Flag, Kitchen_Flag, Bathroom_Flag, Appliances_Flag, Windows_Flag, Landscaping_Flag, Trashout_Flag) 
-        values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        insert into rehab (id, property_id, Underwriting_Rehab, Rehab_Calculation, Paint, Flooring_Flag, Foundation_Flag, Roof_Flag, HVAC_Flag, Kitchen_Flag, Bathroom_Flag, Appliances_Flag, Windows_Flag, Landscaping_Flag, Trashout_Flag) 
+        values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         try:
             for rehab in property.get('Rehab'):
                 cur.execute(rehab_query, (
-                    id,
+                    str(uuid.uuid4()),
+                    id,  # Property ID
                     rehab.get('Underwriting_Rehab'),
                     rehab.get('Rehab_Calculation'),
                     rehab.get('Paint'),
@@ -139,14 +142,15 @@ def load_tables(cur):
 
         # Load table Valuation
         valuation_query = """
-        insert into valuation (property_id, Previous_Rent, List_Price, Zestimate, ARV, Expected_Rent, Rent_Zestimate, Low_FMR, High_FMR, Redfin_Value) 
-        values(%s, COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0))
+        insert into valuation (id, property_id, Previous_Rent, List_Price, Zestimate, ARV, Expected_Rent, Rent_Zestimate, Low_FMR, High_FMR, Redfin_Value) 
+        values(%s, %s, COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0))
         """
 
         try:
             for valuation in property.get('Valuation'):
                 cur.execute(valuation_query, (
-                    id,
+                    str(uuid.uuid4()),
+                    id,  # Property ID
                     valuation.get('Previous_Rent'),
                     valuation.get('List_Price'),
                     valuation.get('Zestimate'),
@@ -163,13 +167,14 @@ def load_tables(cur):
 
         # Load table taxes
         taxes_query = """
-        insert into taxes (property_id, taxes) 
-        values(%s, COALESCE(%s, 0))
+        insert into taxes (id, property_id, taxes) 
+        values(%s, %s, COALESCE(%s, 0))
         """
 
         try:
             cur.execute(taxes_query, (
-                id,
+                str(uuid.uuid4()),
+                id,  # Property ID
                 property.get('Taxes')
             ))
             counts['taxes'] += 1
