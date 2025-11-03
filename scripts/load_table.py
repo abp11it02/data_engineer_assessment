@@ -11,6 +11,7 @@ def load_tables(cur):
     with open(filepath, 'r') as file:
         properties = json.load(file)
 
+    print("Inserting data to tables...")
     for property in properties:
         id = str(uuid.uuid4())
         # Insert into property table
@@ -125,7 +126,7 @@ def load_tables(cur):
         # Load table Valuation
         valuation_query = """
         insert into valuation (property_id, Previous_Rent, List_Price, Zestimate, ARV, Expected_Rent, Rent_Zestimate, Low_FMR, High_FMR, Redfin_Value) 
-        values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        values(%s, COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0), COALESCE(%s, 0))
         """
 
         try:
@@ -148,7 +149,7 @@ def load_tables(cur):
         # Load table taxes
         taxes_query = """
         insert into taxes (property_id, taxes) 
-        values(%s, %s)
+        values(%s, COALESCE(%s, 0))
         """
 
         try:
@@ -158,3 +159,4 @@ def load_tables(cur):
             ))
         except Error as e:
             print(f"Error connecting to MySQL: {e}")
+    print("Inserting completed!!!")

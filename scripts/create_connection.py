@@ -15,7 +15,7 @@ try:
     if conn.is_connected():
         print("Successfully connected to MySQL database")
         cur = conn.cursor()
-        # create_tables(cur)
+        create_tables(cur)
         load_tables(cur)
         conn.commit()
 

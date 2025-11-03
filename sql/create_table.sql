@@ -1,23 +1,3 @@
-create table if not exists HOA (
-    property_id varchar(50),
-    hoa integer,
-    hoa_flag varchar(3),
-    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
-);
-
-create table if not exists leads (
-    property_id varchar(50),
-    Most_Recent_Status varchar(50),
-    Source varchar(50),
-    Occupancy varchar(50),
-    Net_Yield float,
-    IRR float,
-    Selling_Reason varchar(50),
-    Seller_Retained_Broker varchar(50),
-    Final_Reviewer varchar(50),
-    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
-);
-
 create table if not exists property (
     id varchar(50) primary key,
     Property_Title varchar(255),
@@ -52,6 +32,26 @@ create table if not exists property (
     Longitude float,
     Subdivision varchar(100),
     School_Average float
+);
+
+create table if not exists HOA (
+    property_id varchar(50),
+    hoa integer,
+    hoa_flag varchar(3),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
+);
+
+create table if not exists leads (
+    property_id varchar(50),
+    Most_Recent_Status varchar(50),
+    Source varchar(50),
+    Occupancy varchar(50),
+    Net_Yield float,
+    IRR float,
+    Selling_Reason varchar(50),
+    Seller_Retained_Broker varchar(50),
+    Final_Reviewer varchar(50),
+    FOREIGN KEY (property_id) REFERENCES property(id) ON DELETE CASCADE
 );
 
 create table if not exists rehab (
